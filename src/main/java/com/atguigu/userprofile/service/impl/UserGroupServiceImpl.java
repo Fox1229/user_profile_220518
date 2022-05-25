@@ -139,7 +139,6 @@ public class UserGroupServiceImpl extends ServiceImpl<UserGroupMapper, UserGroup
         String insertSelectSQL = getInsertSelectSQL(usergroup);
         baseMapper.insertBitmapCK(insertSelectSQL);
 
-
         // ck 中的 删除和修改 是异步的  问题？ 有可能执行redis时，异步的删除没有真正执行 ，查询出了旧数据 破解？
         // 策略 sleep :  1 睡的时间不确定 2 影响用户体验
         // 策略 异步变同步： 1 影响面太大 2  optimize  table xxx  final   性能影响较大  全表
