@@ -36,7 +36,6 @@ public class UserGroup implements Serializable {
 
     private String conditionComment;
 
-
     private Long userGroupNum;
 
     private String updateType;
@@ -44,7 +43,6 @@ public class UserGroup implements Serializable {
     private String userGroupComment;
 
     private Date updateTime;
-
 
     private Date createTime;
     @TableField(exist = false)

@@ -4,6 +4,7 @@ import com.atguigu.userprofile.bean.TagInfo;
 import com.atguigu.userprofile.mapper.TagInfoMapper;
 import com.atguigu.userprofile.service.TagInfoService;
 import com.baomidou.dynamic.datasource.annotation.DS;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import java.util.Map;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author zhangchen
@@ -28,14 +29,14 @@ public class TagInfoServiceImpl extends ServiceImpl<TagInfoMapper, TagInfo> impl
     @Autowired
     TagInfoMapper tagInfoMapper;
 
-    public List<TagInfo> getTagInfoAllWithStatus(){
+    public List<TagInfo> getTagInfoAllWithStatus() {
 
-       return   tagInfoMapper.getTagInfoAllWithStatus();
+        return tagInfoMapper.getTagInfoAllWithStatus();
     }
 
-    public TagInfo getTagInfo(Long taskId){
-        TagInfo tagInfo =  getById(taskId);
-        if(tagInfo.getTagLevel()>1L){
+    public TagInfo getTagInfo(Long taskId) {
+        TagInfo tagInfo = getById(taskId);
+        if (tagInfo.getTagLevel() > 1L) {
             TagInfo parentTagInfo = getById(tagInfo.getParentTagId());
             tagInfo.setParentTagLevel(parentTagInfo.getTagLevel());
             tagInfo.setParentTagName(parentTagInfo.getTagName());
@@ -44,18 +45,17 @@ public class TagInfoServiceImpl extends ServiceImpl<TagInfoMapper, TagInfo> impl
         return tagInfo;
     }
 
-       public List<TagInfo> getTagValueList(String parentTagCode){
-         return tagInfoMapper.getTagValueList(parentTagCode);
-       }
+    public List<TagInfo> getTagValueList(String parentTagCode) {
+        return tagInfoMapper.getTagValueList(parentTagCode);
+    }
 
-       public Map<String,TagInfo> getTagInfoMapWithCode(){
-           List<TagInfo> tagInfoList =  super.list();//查数据库
-           Map<String,TagInfo> tagInfoMap=new HashMap<>();
-           for (TagInfo tagInfo : tagInfoList) {
-               tagInfoMap.put(tagInfo.getTagCode(),tagInfo);
-           }
-           return tagInfoMap;
-
-       }
-
+    public Map<String, TagInfo> getTagInfoMapWithCode() {
+        // 查询三级标签
+        List<TagInfo> tagInfoList = super.list(new QueryWrapper<TagInfo>().eq("tag_level", 3));//查数据库
+        Map<String, TagInfo> tagInfoMap = new HashMap<>();
+        for (TagInfo tagInfo : tagInfoList) {
+            tagInfoMap.put(tagInfo.getTagCode(), tagInfo);
+        }
+        return tagInfoMap;
+    }
 }

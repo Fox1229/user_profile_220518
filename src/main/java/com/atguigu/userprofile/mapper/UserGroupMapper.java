@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * <p>
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @author zhangchen
@@ -23,22 +23,18 @@ import java.util.List;
 @DS("mysql")
 public interface UserGroupMapper extends BaseMapper<UserGroup> {
 
-
     //写入数据的insert语句
     @Insert("${insertSQL}")
     @DS("clickhouse")
     public void insertBitmapCK(String insertSQL);
 
-
     @Select("select arrayJoin(bitmapToArray(us)) from user_group where user_group_id=#{userGroupId}")
     @DS("clickhouse")
     public List<String> selectBitMapArrayById(String userGroupId);
 
-    @Select("${bitmapArraySQL}")
+    @Select("select arrayJoin(bitmapToArray(${bitmapAndSQL}))")
     @DS("clickhouse")
-    public List<String> selectBitMapArraySQLById(String bitmapArraySQL);
-
-
+    public List<String> selectBitmapAndFromCK(String bitmapAndSQL);
 
     @Select("${bitmapCardiSQL}")
     @DS("clickhouse")
